@@ -19,9 +19,9 @@ class Order extends Model
         'payment_id'
     ];
 
-    public function products()
+    public function orderProducts()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->hasMany(OrderProduct::class);
     }
 
     public function user()
@@ -37,5 +37,18 @@ class Order extends Model
     public function payment()
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    public function getTotalPriceAttribute()
+    {
+        $price = 0.0;
+        
+        foreach($this->orderProducts as $item) {
+            $price += $item->quantity * $item->product->price;
+        }
+        
+        $this->price = $price;
+
+        return $this->price;
     }
 }

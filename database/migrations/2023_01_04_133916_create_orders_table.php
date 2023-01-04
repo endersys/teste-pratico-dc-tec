@@ -17,11 +17,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->decimal('price', 12, 2);
+            $table->decimal('price', 12, 2)->default(0.0);
             $table->string('status')->default(OrderStatus::PendingPayment);
             $table->foreignId('user_id')->constrained();
             $table->foreignId('client_id')->constrained();
-            $table->foreignId('payment_id')->constrained();
+            $table->foreignId('payment_id')->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();
         });
