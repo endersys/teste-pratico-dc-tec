@@ -14,6 +14,7 @@ class Order extends Model
         'date',
         'price',
         'status',
+        'user_id',
         'client_id',
         'payment_id'
     ];
@@ -23,7 +24,7 @@ class Order extends Model
         return $this->belongsToMany(Product::class);
     }
 
-    public function seller()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
