@@ -85,17 +85,16 @@
                             <i class="bx bx-menu bx-sm"></i>
                         </a>
                     </div>
-                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                        <form action="/" method="get">
-                            <div class="navbar-nav align-items-center">
-                                <div class="nav-item d-flex align-items-center">
-                                    <i class="bx bx-search fs-4 lh-0"></i>
-                                    <input type="text" class="form-control border-0 shadow-none"
-                                        placeholder="Buscar..." aria-label="Search..." name="term" value="" />
-                                </div>
-                            </div>
-                        </form>
+                    <div class="navbar-nav-right d-flex align-items-right" id="navbar-collapse">
                     </div>
+                    
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button href="" class="dropdown-item" type="submit">
+                            <i class="bx bx-power-off me-2"></i>
+                            <span class="align-middle">Sair</span>
+                        </button>
+                    </form>
                 </nav>
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">

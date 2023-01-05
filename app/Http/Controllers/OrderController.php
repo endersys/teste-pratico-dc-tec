@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\OrderStatus;
-use App\Enums\PaymentMethod;
-use App\Models\Client;
-use App\Models\Order;
-use App\Models\Payment;
-use App\Models\Product;
+use App\Enums\{ OrderStatus, PaymentMethod };
+use App\Http\Requests\{ StoreOrderRequest, UpdateOrderRequest };
+use App\Models\{ Client, Order, Payment, Product };
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -28,14 +25,9 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $data = $request->validate([
-            'client' => 'required',
-            'address' => 'required',
-            'product_id' => 'required',
-            'quantity' => 'required'
-        ]);
+        $data = $request->validated();
 
         $client = Client::create([
             'name' => $data['client'],
@@ -71,14 +63,9 @@ class OrderController extends Controller
         ]);
     }
 
-    public function update(Request $request, Order $order)
+    public function update(UpdateOrderRequest $request, Order $order)
     {
-        $data = $request->validate([
-            'client' => 'required',
-            'address' => 'required',
-            'product_id' => 'required',
-            'quantity' => 'required'
-        ]);
+        $data = $request->validated();
 
         $order->client->update([
             'name' => $data['client'],

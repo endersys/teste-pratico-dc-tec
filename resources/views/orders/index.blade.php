@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <h2 class="mb-4">Pedidos</h2>
         <table class="table orders_datatable">
             <thead>
                 <tr>

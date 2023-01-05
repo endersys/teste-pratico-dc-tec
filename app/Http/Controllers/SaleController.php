@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use Barryvdh\DomPDF\Facade\Pdf;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 
