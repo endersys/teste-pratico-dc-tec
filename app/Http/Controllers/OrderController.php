@@ -95,4 +95,13 @@ class OrderController extends Controller
 
         return to_route('orders.index');
     }
+
+    public function destroy(Order $order)
+    {
+        $order->orderProducts()->delete();
+
+        $order->delete();
+
+        return to_route('orders.index');
+    }
 }

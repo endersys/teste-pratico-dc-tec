@@ -36,9 +36,13 @@
                                     <a class="dropdown-item" href="{{ route('orders.edit', $order->id) }}">
                                         <i class="bx bx-edit-alt me-2"></i>Editar
                                     </a>
-                                    <a class="dropdown-item" href="">
-                                        <i class="bx bx-trash-alt me-2"></i>Excluir
-                                    </a>
+                                    <form action="{{ route('orders.destroy', $order->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="dropdown-item" type="submit">
+                                            <i class="bx bx-trash-alt me-2"></i>Excluir
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </td>
