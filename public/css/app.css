@@ -1,3 +1,7 @@
+.layout-navbar {
+    z-index: 0 !important
+}
+
 .btn-primary {
     margin: 5px 0 5px 0;
 }

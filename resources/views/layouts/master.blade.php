@@ -3,6 +3,7 @@
     data-assets-path={{ asset('sneat-1.0.0/assets/') }} data-template="vertical-menu-template-free">
 
 <head>
+    @notifyCss
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
@@ -87,7 +88,7 @@
                     </div>
                     <div class="navbar-nav-right d-flex align-items-right" id="navbar-collapse">
                     </div>
-                    
+
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
                         <button href="" class="dropdown-item" type="submit">
@@ -158,7 +159,8 @@
             </div>
         </div>
     </div>
-
+    <x:notify-messages />
+    @notifyJs
     <script src={{ asset('sneat-1.0.0/assets/vendor/libs/jquery/jquery.js') }}></script>
     <script src={{ asset('sneat-1.0.0/assets/vendor/js/bootstrap.js') }}></script>
     <script src={{ asset('sneat-1.0.0/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}></script>

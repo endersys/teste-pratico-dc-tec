@@ -26,7 +26,9 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request)
     {
-        StoreOrder::run($request->validated());    
+        StoreOrder::run($request->validated());  
+        
+        notify()->success('Pedido cadastrado com sucesso!');
 
         return to_route('orders.index');
     }
@@ -44,6 +46,8 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         UpdateOrder::run($request->validated(), $order);    
+
+        notify()->success('Pedido atualizado com sucesso!');
 
         return to_route('orders.index');
     }
@@ -65,6 +69,8 @@ class OrderController extends Controller
     public function payOrder(PayOrderRequest $request, Order $order)
     {
         PayOrder::run($request->validated(), $order);
+
+        notify()->success('Pagamento efetuado com sucesso!');
 
         return to_route('orders.index');
     }

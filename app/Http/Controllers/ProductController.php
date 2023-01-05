@@ -14,7 +14,9 @@ class ProductController extends Controller
             'price' => 'required'
         ]);
 
-        Product::create($data);
+        $product = Product::create($data);
+
+        notify()->success("$product->name salvo com sucesso!");
 
         return to_route('orders.create');
     }

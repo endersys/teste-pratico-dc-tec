@@ -187,6 +187,7 @@ return [
          */
         App\Providers\FortifyServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         /*
          * Application Service Providers...
          */
