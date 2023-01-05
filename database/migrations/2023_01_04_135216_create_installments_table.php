@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->decimal('price');
-            $table->string('note')->nullable();
             $table->foreignId('payment_id')->constrained();
             $table->timestamps();
         });

@@ -12,7 +12,6 @@ class Installment extends Model
     protected $fillable = [
         'date',
         'price',
-        'note',
         'payment_id'
     ];
 

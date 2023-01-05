@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
 use App\Models\Client;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -13,8 +15,10 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::paginate(15);
-        return view('orders.index', compact('orders'));
+        return view('orders.index', [
+            'orders' => Order::whereStatus(OrderStatus::PendingPayment)->get(),
+            'orderStatuses' => OrderStatus::asSelectArray()
+        ]);
     }
 
     public function create()
@@ -41,7 +45,7 @@ class OrderController extends Controller
         $order = Order::create([
             'date' => Carbon::now(),
             'client_id' => $client->id,
-            'user_id' => User::first()->id,
+            'user_id' => auth()->user()->id,
         ]);
 
         $products = array_combine($data['product_id'], $data['quantity']);
@@ -101,6 +105,49 @@ class OrderController extends Controller
         $order->orderProducts()->delete();
 
         $order->delete();
+        
+        return to_route('orders.index');
+    }
+
+    public function payment(Order $order)
+    {
+        return view('orders.payment', compact('order'));
+    }
+
+    public function payOrder(Request $request, Order $order)
+    {
+        $data = $request->validate([
+            'date' => 'required',
+            'value' => 'required',
+        ]);
+        
+        $paymentType = PaymentMethod::getDescription(PaymentMethod::InCash);
+
+        if (count($data['value']) > 2)
+        {
+            $paymentType = PaymentMethod::getDescription(PaymentMethod::Installments);
+        }
+
+        $payment = Payment::create([
+            'method' => $paymentType,
+            'date' => Carbon::now()
+        ]);
+
+        foreach(array_filter($data['value']) as $installment => $value)
+        {
+            $payment->installments()->create([
+                'date' => Carbon::now(),
+                'price' => $value
+            ]);
+        }
+
+        if (!is_null($payment->date))
+        {
+            $order->update([
+                'payment_id' => $payment->id,
+                'status' => OrderStatus::Paid
+            ]);
+        }
 
         return to_route('orders.index');
     }

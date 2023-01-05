@@ -6,8 +6,8 @@ use BenSampo\{Enum\Enum, Enum\Attributes\Description};
 
 final class PaymentMethod extends Enum
 {
-    #[Description('Dinheiro')]
-    const Money = "money";
-    #[Description('Cartão')]
-    const Card = "card";
+    #[Description('À vista')]
+    const InCash = "inCash";
+    #[Description('Parcelado')]
+    const Installments = "installments";
 }

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href={{ asset('sneat-1.0.0/assets/vendor/fonts/boxicons.css') }} />
     <script src={{ asset('sneat-1.0.0/assets/vendor/js/helpers.js') }}></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 </head>
 
 <body>
@@ -69,7 +70,7 @@
                         </ul>
                     </li>
                     <li class="menu-item">
-                        <a href="cards-basic.html" class="menu-link">
+                        <a href="{{ route('sales.index') }}" class="menu-link">
                             <i class="bi bi-cash m-right-10"></i>
                             <div data-i18n="Basic">Vendas</div>
                         </a>
@@ -147,7 +148,8 @@
                                     </div>
                                     <div class="my-4 mx-4 mt-0">
                                         <button type="submit" class="btn btn-primary">Salvar</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
                                     </div>
                                 </div>
                             </div>
@@ -163,6 +165,12 @@
     <script src={{ asset('sneat-1.0.0/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}></script>
     <script src={{ asset('sneat-1.0.0/assets/vendor/js/menu.js') }}></script>
     <script src={{ asset('sneat-1.0.0/assets/js/main.js') }}></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.orders_datatable').DataTable();
+        });
+    </script>
 </body>
 
 </html>

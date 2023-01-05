@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <table class="table">
+        <table class="table orders_datatable">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -19,9 +19,13 @@
                 @foreach ($orders as $order)
                     <tr>
                         <td></td>
-                        <td>{{ $order->date }}</td>
+                        <td>{{ date('d/m/Y', strtotime($order->date)) }}</td>
                         <td>R$ {{ $order->totalPrice }}</td>
-                        <td>{{ $order->status }}</td>
+                        @foreach ($orderStatuses as $status => $description)
+                            @if ($order->status == $status)
+                                <td>{{ $description }}</td>
+                            @endif
+                        @endforeach
                         <td>{{ $order->user->name }}</td>
                         <td>{{ $order->client->name }}</td>
                         <td>{{ $order->payment->method ?? '' }}</td>
@@ -30,7 +34,7 @@
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                     data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="">
+                                    <a class="dropdown-item" href="{{ route('orders.payOrder', $order->id) }}">
                                         <i class="bi bi-wallet2 me-2"></i>Pagar pedido
                                     </a>
                                     <a class="dropdown-item" href="{{ route('orders.edit', $order->id) }}">
