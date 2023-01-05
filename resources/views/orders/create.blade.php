@@ -11,11 +11,17 @@
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="client" class="form-label">Cliente</label>
-                                <input type="text" class="form-control" name="client" value="" />
+                                <input type="text" class="form-control" name="client" value="{{ old("client") }}"/>
+                                @error('client')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="address" class="form-label">Endereço</label>
-                                <input type="text" class="form-control" name="address" value="" />
+                                <input type="text" class="form-control" name="address" value="{{ old("address") }}" />
+                                @error('address')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                         <div class="mb-3">
@@ -49,7 +55,8 @@
                         <div class="row py-2">
                             <div class="col-sm-10">
                                 <button type="submit" class="btn btn-primary">Cadastrar</button>
-                                <a href="{{ route('orders.index') }}" type="reset" class="btn btn-outline-secondary">Cancelar</a>
+                                <a href="{{ route('orders.index') }}" type="reset"
+                                    class="btn btn-outline-secondary">Cancelar</a>
                             </div>
                         </div>
                     </div>
