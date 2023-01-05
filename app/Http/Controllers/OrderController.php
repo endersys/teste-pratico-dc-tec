@@ -60,10 +60,39 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         $products = Product::all();
-        
+
         return view('orders.edit', [
             'order' => $order,
             'products' => $products
         ]);
+    }
+
+    public function update(Request $request, Order $order)
+    {
+        $data = $request->validate([
+            'client' => 'required',
+            'address' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required'
+        ]);
+
+        $order->client->update([
+            'name' => $data['client'],
+            'address' => $data['address']
+        ]);
+
+        $products = array_combine($data['product_id'], $data['quantity']);
+
+        $order->orderProducts()->delete();
+
+        foreach($products as $product => $value)
+        {
+            $order->orderProducts()->create([
+                'product_id' => $product,
+                'quantity' => $value
+            ]);
+        }
+
+        return to_route('orders.index');
     }
 }
