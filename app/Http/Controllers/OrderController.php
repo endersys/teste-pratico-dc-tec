@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\{ OrderStatus, PaymentMethod };
-use App\Http\Requests\{ StoreOrderRequest, UpdateOrderRequest };
-use App\Models\{ Client, Order, Payment, Product };
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Actions\Order\{ UpdateOrder, StoreOrder, PayOrder };
+use App\Enums\OrderStatus;
+use App\Http\Requests\{PayOrderRequest, StoreOrderRequest, UpdateOrderRequest };
+use App\Models\{ Order, Product };
 
 class OrderController extends Controller
 {
@@ -27,28 +26,7 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request)
     {
-        $data = $request->validated();
-
-        $client = Client::create([
-            'name' => $data['client'],
-            'address' => $data['address']
-        ]);
-
-        $order = Order::create([
-            'date' => Carbon::now(),
-            'client_id' => $client->id,
-            'user_id' => auth()->user()->id,
-        ]);
-
-        $products = array_combine($data['product_id'], $data['quantity']);
-
-        foreach($products as $product => $value)
-        {
-            $order->orderProducts()->create([
-                'product_id' => $product,
-                'quantity' => $value
-            ]);
-        }
+        StoreOrder::run($request->validated());    
 
         return to_route('orders.index');
     }
@@ -65,24 +43,7 @@ class OrderController extends Controller
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        $data = $request->validated();
-
-        $order->client->update([
-            'name' => $data['client'],
-            'address' => $data['address']
-        ]);
-
-        $products = array_combine($data['product_id'], $data['quantity']);
-
-        $order->orderProducts()->delete();
-
-        foreach($products as $product => $value)
-        {
-            $order->orderProducts()->create([
-                'product_id' => $product,
-                'quantity' => $value
-            ]);
-        }
+        UpdateOrder::run($request->validated(), $order);    
 
         return to_route('orders.index');
     }
@@ -101,40 +62,9 @@ class OrderController extends Controller
         return view('orders.payment', compact('order'));
     }
 
-    public function payOrder(Request $request, Order $order)
+    public function payOrder(PayOrderRequest $request, Order $order)
     {
-        $data = $request->validate([
-            'date' => 'required',
-            'value' => 'required',
-        ]);
-        
-        $paymentType = PaymentMethod::getDescription(PaymentMethod::InCash);
-
-        if (count($data['value']) > 2)
-        {
-            $paymentType = PaymentMethod::getDescription(PaymentMethod::Installments);
-        }
-
-        $payment = Payment::create([
-            'method' => $paymentType,
-            'date' => Carbon::now()
-        ]);
-
-        foreach(array_filter($data['value']) as $installment => $value)
-        {
-            $payment->installments()->create([
-                'date' => Carbon::now(),
-                'price' => $value
-            ]);
-        }
-
-        if (!is_null($payment->date))
-        {
-            $order->update([
-                'payment_id' => $payment->id,
-                'status' => OrderStatus::Paid
-            ]);
-        }
+        PayOrder::run($request->validated(), $order);
 
         return to_route('orders.index');
     }

@@ -12,7 +12,6 @@
                     <th scope="col">Status</th>
                     <th scope="col">Vendendor</th>
                     <th scope="col">Cliente</th>
-                    <th scope="col">Forma de pagamento</th>
                     <th scope="col">Ações</th>
                 </tr>
             </thead>
@@ -29,7 +28,6 @@
                         @endforeach
                         <td>{{ $order->user->name }}</td>
                         <td>{{ $order->client->name }}</td>
-                        <td>{{ $order->payment->method ?? '' }}</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
